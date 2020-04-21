@@ -1,0 +1,77 @@
+step 1: create app [C]> django-admin startproject progName
+                      > python manage.py startapp airtransportproject
+                      > python manage.py migrate   <----in pycharm start from here
+                      > python manage.py createsuperuser
+
+                      -> add (airtransportproject) to >>> settings
+
+                      > python manage.py runserver
+
+                      -> Заходим на страницу администратора localhost:8000/admin
+
+--------------------------------------------------------------------------------------------
+
+step 2: Создаём модель в appName/models.py
+
+from django.db import models
+
+# Create your models here.
+class Booking(models.Model):
+	book_ref = models.CharField(max_length = 6, primary_key = True)  # номер бронирования
+	book_date = models.DateField(auto_now = True)
+	total_amount = models.FloatField()
+
+	def __str__ (self):
+		return f"{self.book_ref}, {self.book_date}, {self.total_amount}"    # view in admin page
+
+--------------------------------------------------------------------------------------------
+
+step 3:  Регистрируем модель на сайте администратора appName/admin.py
+
+from django.contrib import admin
+from .models import *
+
+# Register your models here.
+admin.site.register(Booking)
+
+--------------------------------------------------------------------------------------------
+
+step 4:  Создаём новую таблицу в базе данных
+         [C]> (press) CTRL + C make exitserver
+            > python manage.py makemigrations
+            > python manage.py migrate
+            > python manage.py runserver
+
+            -> check table in DB, it'll be added
+            -> check admin page
+
+--------------------------------------------------------------------------------------------
+
+step 5: Использование Django ORM в представлениях (views)
+        Получение (read) данных в представлениях
+
+def get_booking(request, booking_id):
+    bookking_seat = Booking.objects.get(id = booking_id)
+	return HttpResponse(f'{bookking_seat}')
+
+-> check localhost:8000/airtransportproject/1 or 2
+--------------------------------------------------------------------------------------------
+step 6:
+
+step 7:
+
+step 8:
+
+step 9:
+
+step 10:
+
+step 11:
+
+step 12:
+
+step 13:
+
+step 14:
+
+step 15:
