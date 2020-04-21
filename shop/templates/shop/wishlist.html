@@ -4,7 +4,10 @@
 
 {% block content %}
 
+    {% csrf_token %}
+
     <a id="picsum-ref" hidden="true" href={%  url 'wishlist-pic' %}></a>
+    <a id="wishlist-ref" hidden="true" href={%  url 'wishlist' %}></a>
 
     <link rel='stylesheet' href="{% static "shop/js/build/bundle.css" %}" />
 	<script defer src="{% static "shop/js/build/bundle.js" %}"></script>

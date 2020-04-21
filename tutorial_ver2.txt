@@ -259,12 +259,54 @@ step 16: Svelte
          [C]> npm install
             > npm run-script build  <--type-enter again if changes are added
 
+            >npm i js-cookie
+
          in app.svelte: in main:
          <input bind:value={name}>  специальная страка для привязки значений и динамического изменения.
 
 -----------------------------------------------------------------------------
 
+step 17: csrftoken
+    1. in .svelte
+        const CSRF_TOKEN = Cookies.get('csrftoken');
+        const WISHLIST_URL = getRef("wishlist-ref")
 
+        onInterval (async () => {
+		const response = awaitfetch (WISHLIST_URL, header: {
+											'Contenr-Type': 'application/json',
+											'Accept': 'application/json, text-plain, */*',
+											'X-Requested-With': 'XMLHttpRequest',
+											'X-CSRF_TOKEN': CSRF_TOKEN
+										};
+										method: 'POST',
+										credentials: 'same-origin',
+										body: JSON.stringify({})
+									});
+		console.log(await response.text());
+
+	    },1000);
+
+    2. in .html
+         {% csrf_token %}
+         <a id="wishlist-ref" hidden="true" href={%  url 'wishlist' %}></a>
+
+    3. in urls.py
+        path('wishlist/', WishlistView.as_view(), name='wishlist'),
+	    path('wishlist/pic/', lambda request: redirect("https://picsum.photos/100"), name='wishlist-pic')
+
+	4. onInterval (async...   <-- LOOK UP (1)
+
+	5. in view.py
+	    def post(self, request):
+            global wishlist_count
+            if request.is_ajax():
+                message = f'WishlistView: {wishlist_count}'
+                wishlist_count += 1
+                print(message)
+            else:
+                message = 'Not AJAX request'
+
+                return HttpResponse(message)
 
 
 

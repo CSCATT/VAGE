@@ -73,9 +73,21 @@ class AboutView(View):
     def get(self, request):
         return render(request, 'shop/about.html', base_dict)
 
+wishlist_count = 0
 class WishlistView(View):
     def get(self, request):
         return render(request, 'shop/wishlist.html', base_dict)
+
+    def post(self, request):
+        global wishlist_count
+        if request.is_ajax():
+            message = f'WishlistView: {wishlist_count}'
+            wishlist_count += 1
+            print(message)
+        else:
+            message = 'Not AJAX request'
+
+        return HttpResponse(message)
 
 class ContactView(View):
     def get(self, request):
